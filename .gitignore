@@ -1,0 +1,8 @@
+# Ignore bundler config.
+.bundle
+
+# Ignore the vendor directory.
+/vendor/bundle
+
+# Ignore generated files.
+/Gemfile.lock

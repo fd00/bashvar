@@ -1,0 +1,37 @@
+require: rubocop-performance
+
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+  TargetRubyVersion: 3.2
+  Exclude:
+    - 'vendor/**/*'
+
+Gemspec/DevelopmentDependencies:
+  EnforcedStyle: gemspec
+
+Layout/LineLength:
+  Max: 160
+  Exclude:
+    - '*.gemspec'
+
+Metrics/AbcSize:
+  Max: 45
+Metrics/BlockLength:
+  Exclude:
+    - '*.gemspec'
+    - 'spec/**/*'
+Metrics/CyclomaticComplexity:
+  Max: 10
+Metrics/MethodLength:
+  Max: 35
+Metrics/ParameterLists:
+  Max: 8
+Metrics/PerceivedComplexity:
+  Max: 12
+
+Naming/FileName:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
