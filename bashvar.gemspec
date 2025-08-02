@@ -18,11 +18,9 @@ Gem::Specification.new do |spec|
   spec.metadata['source_code_uri'] = spec.homepage
   spec.metadata['rubygems_mfa_required'] = 'true'
 
-  spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{\A(spec|features)/}) }
-  end
+  spec.files = Dir['lib/**/*', 'LICENSE', 'README.md', 'bashvar.md']
   spec.bindir        = 'exe'
-  spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+  spec.executables   = []
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'fasterer', '>= 0.11.0'
