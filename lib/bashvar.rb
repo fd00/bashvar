@@ -4,7 +4,7 @@ require_relative 'bashvar/version'
 
 class BashVar
   class << self
-    def parse(input)
+    def parse(input, symbolize_names: false)
       return {} if input.nil? || input.strip.empty?
 
       vars = {}
@@ -23,14 +23,14 @@ class BashVar
         next if flags.include?('f') && !flags.match?(/-[^A-Za-z]*[ai]/) # crude but protects `declare -f`
 
         value = if flags.include?('a') || flags.include?('A')
-                  parse_array_like(raw, assoc: flags.include?('A'))
+                  parse_array_like(raw, assoc: flags.include?('A'), symbolize_names: symbolize_names)
                 elsif flags.include?('i')
                   parse_integer(raw)
                 else
                   parse_scalar(raw)
                 end
-
-        vars[name] = value
+        key = symbolize_names ? name.to_sym : name
+        vars[key] = value
       end
       vars
     end
@@ -65,7 +65,7 @@ class BashVar
       end
     end
 
-    def parse_array_like(raw, assoc: false)
+    def parse_array_like(raw, assoc: false, symbolize_names: false)
       s = raw.strip
       # expect quoted wrapper; tolerate missing quotes
       # Corrected string comparisons for quotes
@@ -86,7 +86,8 @@ class BashVar
         key_str = parse_scalar(k.strip.gsub(/^"|"$/, '').gsub(/^'|'$/, '')) # keys seldom quoted; defensive
         val_str = parse_scalar(v)
         if assoc
-          result[key_str] = val_str
+          key = symbolize_names ? key_str.to_sym : key_str
+          result[key] = val_str
         else
           idx = key_str.to_i
           result[idx] = val_str

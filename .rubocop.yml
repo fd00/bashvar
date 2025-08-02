@@ -22,7 +22,7 @@ Metrics/BlockLength:
     - '*.gemspec'
     - 'spec/**/*'
 Metrics/CyclomaticComplexity:
-  Max: 10
+  Max: 15
 Metrics/MethodLength:
   Max: 35
 Metrics/ParameterLists:

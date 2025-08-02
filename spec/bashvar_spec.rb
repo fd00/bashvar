@@ -87,5 +87,31 @@ RSpec.describe BashVar do
     it 'returns an empty hash for blank input' do
       expect(BashVar.parse("\n\t ")).to eq({})
     end
+
+    context 'with symbolize_names: true' do
+      it 'parses a basic scalar variable with symbolized key' do
+        input = 'declare -- NAME="hello"'
+        expect(BashVar.parse(input, symbolize_names: true)).to eq({ NAME: 'hello' })
+      end
+
+      it 'parses an associative array with symbolized keys' do
+        input = "declare -A MAP='([k]=\"v\" [x]=\"y\")'"
+        expect(BashVar.parse(input, symbolize_names: true)).to eq({ MAP: { k: 'v', x: 'y' } })
+      end
+
+      it 'parses mixed input with symbolized keys' do
+        input = <<~BASH
+          declare -- NAME="hello"
+          declare -i COUNT="42"
+          declare -A DATA='([key1]="val1" [key2]="val2")'
+        BASH
+        expected = {
+          NAME: 'hello',
+          COUNT: 42,
+          DATA: { key1: 'val1', key2: 'val2' }
+        }
+        expect(BashVar.parse(input, symbolize_names: true)).to eq(expected)
+      end
+    end
   end
 end

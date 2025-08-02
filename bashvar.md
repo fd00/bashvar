@@ -50,7 +50,9 @@ class BashVar
   #
   # @param input [String] Multi-line string containing the raw output of
   #   `compgen -v | while read -r var; do declare -p "$var"; done`.
-  # @return [Hash{String => (String, Integer, Array, Hash)}]
+  # @param symbolize_names [Boolean] When true, returns a Hash with symbolized keys.
+  #   Defaults to false.
+  # @return [Hash{(String | Symbol) => (String, Integer, Array, Hash)}]
   #   Variable name mapped to decoded Ruby value.
   #
   # Type mapping rules:
@@ -59,7 +61,7 @@ class BashVar
   #   -i  -> Integer (fallback String)
   #   else -> String
   #
-  def self.parse(input)
+  def self.parse(input, symbolize_names: false)
     ...
   end
 end
@@ -68,8 +70,10 @@ end
 ### Error Handling
 
 - Method **must never raise** on malformed lines; skip unparseable entries.
-- Recoverable parse anomalies (e.g., unknown escape `\\z`) → leave literal `z` w/o backslash.
+- Recoverable parse anomalies (e.g., unknown escape `\\z`) 
+ leave literal `z` w/o backslash.
 - Return empty `{}` if `input.nil?` or blank.
+
 
 ---
 
