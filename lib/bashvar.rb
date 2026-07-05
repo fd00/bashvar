@@ -12,7 +12,7 @@ class BashVar
         line = line.strip
 
         # Main regex for parsing declare lines
-        m = line.match(/^declare\s+(-[A-Za-z\-]+)?\s+([A-Za-z_][A-Za-z0-9_]*)=(.*)$/)
+        m = line.match(/^declare\s+(-[A-Za-z-]+)?\s+([A-Za-z_][A-Za-z0-9_]*)=(.*)$/)
         next unless m
 
         flags = m[1] || ''
